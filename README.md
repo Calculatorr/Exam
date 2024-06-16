@@ -1,5 +1,6 @@
 // Авторизация
-public partial class MainWindow : Window
+
+    public partial class MainWindow : Window
     {
         string login1 = "1";/*Менеджер*/
         string password1 = "1";
@@ -56,11 +57,12 @@ public partial class MainWindow : Window
 }
 
 // Подключение БД
-public partial class AutoSalonEntities5 : DbContext
-    {
+
+        public partial class AutoSalonEntities5 : DbContext
+        {
         private static AutoSalonEntities5 _context;
-        public AutoSalonEntities5()
-            : base("name=AutoSalonEntities5")
+            public AutoSalonEntities5()
+                : base("name=AutoSalonEntities5")
         {
         }
 
@@ -73,7 +75,9 @@ public partial class AutoSalonEntities5 : DbContext
 
 
 // Вывод в грид
-{
+
+
+    {
         public Page1()
         {
             InitializeComponent();
@@ -116,8 +120,9 @@ public partial class AutoSalonEntities5 : DbContext
 }
 
 // Сохранение в БД
-  public partial class AddPokupatel : Window
-    {
+      
+      public partial class AddPokupatel : Window
+        {
         private Pokupatel _currentPokupatel = new Pokupatel();
         public AddPokupatel(Pokupatel selectedPokupatel)
         {
