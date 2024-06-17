@@ -1,3 +1,6 @@
+// ВПР 
+        
+    =ВПР(А2;$D$16;$E$18;2;0)
 // Авторизация
 
     public partial class MainWindow : Window
