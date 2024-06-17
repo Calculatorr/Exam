@@ -172,3 +172,116 @@
     }
     }
     
+// Добавление в бд
+
+    namespace Kod
+    {
+    /// <summary>
+    /// Логика взаимодействия для ADSotr.xaml
+    /// </summary>
+    public partial class ADSotr : Window
+    {
+        private user _currentuser = new user();
+        public ADSotr(user selecteduser)
+        {
+            InitializeComponent();
+            if (selecteduser != null)
+                _currentuser = selecteduser;
+            DataContext = _currentuser;
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder errors = new StringBuilder();
+
+            if (string.IsNullOrWhiteSpace(_currentuser.lastname))
+                errors.AppendLine("Укажите фамилию");
+            if (string.IsNullOrWhiteSpace(_currentuser.firstname))
+                errors.AppendLine("Укажите имя");
+            if (string.IsNullOrWhiteSpace(_currentuser.middlename))
+                errors.AppendLine("Укажите отчество");
+            if (string.IsNullOrWhiteSpace(_currentuser.status))
+                errors.AppendLine("Укажите статус");
+
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(errors.ToString());
+                return;
+            }
+
+            if (_currentuser.userid == 0)
+               name_databaseEntities.GetContext().user.Add(_currentuser);
+
+            try
+            {
+                name_databaseEntities.GetContext().SaveChanges();
+                //MessageBox.Show("Информация сохранена!");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+
+
+            this.Close();
+        }
+    }
+    }
+    <Grid>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="263,118,0,0" TextWrapping="Wrap" Text ="{Binding lastname}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="263,170,0,0" TextWrapping="Wrap" Text="{Binding firstname}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="263,212,0,0" TextWrapping="Wrap" Text="{Binding middlename}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="263,255,0,0" TextWrapping="Wrap" Text="{Binding status}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Сохранить" Name="Save" Click="Save_Click" HorizontalAlignment="Left" Margin="263,326,0,0" VerticalAlignment="Top" Width="75"/>
+
+    </Grid>
+
+// XAML Master 
+
+    <Window x:Class="Kod.Master"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kod"
+        mc:Ignorable="d"
+        Title="Master" Height="450" Width="800">
+    <Grid>
+        <Button Name="Sotrud" Click="Sotrud_Click" Content="Сотрудники" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Name="Zakaz" Click="Zakaz_Click" Content="Заказы" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Name="Smena" Click="Smena_Click" Content="Смена" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Width="75"/>
+        <DockPanel Height="450" Margin="97,0,-0.4,-30">
+            <Border BorderBrush="Black" BorderThickness="2" DockPanel.Dock="Top" >
+                <StackPanel Margin="-1.6,-2,-1.8,-2">
+                    <Frame Name="MyFrame" Margin="-1.6,-2,-1.8,-2">
+                        
+                    </Frame>
+                </StackPanel>
+            </Border>
+        </DockPanel>
+    </Grid>
+    </Window>
+    public partial class Master : Window
+    {
+        public Master()
+        {
+            InitializeComponent();
+        }
+
+        private void Sotrud_Click(object sender, RoutedEventArgs e)
+        {
+            MyFrame.Content = new Sotrudniki();
+        }
+
+        private void Zakaz_Click(object sender, RoutedEventArgs e)
+        {
+            MyFrame.Content = new Zakaz();
+        }
+
+        private void Smena_Click(object sender, RoutedEventArgs e)
+        {
+            MyFrame.Content = new Smena();
+        }
+    }
+    }
